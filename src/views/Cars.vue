@@ -1,5 +1,9 @@
 <template>
-  <section class="flex justify-center pt-10">
+  <section class="flex flex-col justify-center items-center pt-10">
+    <router-link to="/cars/new" class="btn-primary mb-4">
+      <span class="mr-2 text-lg leading-none">+</span>
+      Новое авто
+    </router-link>
     <div class="border border-gitGray-600 bg-gitGray-700 rounded-md pt-2 pb-4">
       <table class="bg-gitGray-900 text-gitGray-100 border-collapse">
         <thead>
@@ -30,11 +34,23 @@
         </tbody>
       </table>
     </div>
+    <div class="mt-10 flex">
+      <Select v-model="test1" :options="testOptions" class="mr-4 w-60"></Select>
+      <Select
+        v-model="test2"
+        :options="testOptions"
+        placeholder="test"
+        class="w-60"
+      ></Select>
+    </div>
   </section>
 </template>
+
 <script lang="ts" setup>
-import { onMounted } from "vue";
+import { onMounted, ref, watch } from "vue";
 import moment from "moment";
+import Select from "@/components/base/Select.vue";
+import Button from "@/components/base/Button.vue";
 
 interface Car {
   id: number;
@@ -98,8 +114,16 @@ const headers = {
   dateRentBegin: "Дата выдачи",
   dateRentEnd: "Дата возврата",
 };
-onMounted(() => {
-  console.log("test", headers);
+
+const testOptions = ["one", "two", "three", "four", "five", "tryujkldsfghjk"];
+const test1 = ref("");
+const test2 = ref("");
+watch(test2, (newVal: any) => {
+  console.log("Select changed: ...", newVal);
+});
+
+watch([test1, test2], (newVals: any) => {
+  console.log("Select changed: ", newVals);
 });
 
 const formatDate = (date: Date): string => {
